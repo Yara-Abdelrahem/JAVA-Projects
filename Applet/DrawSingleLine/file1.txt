@@ -1,0 +1,49 @@
+import java.applet.Applet;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.MouseEvent ;
+
+class MouseClass implements MouseListener , MouseMotionListener{
+   int pointX1 , pointX2 ,pointY1 , pointY2;
+   public void mouseReleased( MouseEvent e ){ 
+
+      pointX1 = e.getX();
+      pointY1 = e.getY();
+      e.consume();
+   }
+   
+   public void mouseMoved( MouseEvent e ) {
+      pointX2 = e.getX();
+      pointY2 = e.getY();
+      e.consume();
+   }
+   public void drawLine(Graphics g){
+   	g.setColor(Color.BLUE);
+  	g.drawLine(pointX1, pointY1, pointX2, pointY2);  
+   }
+
+}
+
+public class DrawSingleLine extends Applet implements Runnable {
+Thread th;
+MouseClass MouseObj;
+
+    public void init(){
+	th = new Thread(this);
+	MouseObj = new MouseClass();
+     }
+
+     public void paint(Graphics g){
+	MouseObj.drawLine(g);
+      }
+        
+    public void run(){
+	while(true){
+		repaint();
+	try{
+		Thread.sleep(50);
+	}catch(InterruptedException ie)
+		{ie.printStackTrace();}
+	}
+    }
+}
